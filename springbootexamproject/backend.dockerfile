@@ -3,12 +3,11 @@ FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
-COPY mvnw .          
+COPY mvnw .
 COPY .mvn/ .mvn
-
 RUN chmod +x mvnw
 
-COPY pom.xml ./
+COPY pom.xml .
 COPY src ./src
 
 RUN ./mvnw clean package -DskipTests
@@ -17,8 +16,7 @@ RUN ./mvnw clean package -DskipTests
 FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/target/springbootexamproject-1.0.0.jar app.jar
 
 EXPOSE 2000
-
 ENTRYPOINT ["java", "-jar", "app.jar"]
